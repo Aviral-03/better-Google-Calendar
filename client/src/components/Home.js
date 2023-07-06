@@ -82,7 +82,12 @@ export default function Home() {
         }
         setEvents(event);
     }
-    console.log(new Date(startDate).toLocaleString('default', { month: 'long' }), endDate)
+    const colorOptions = [
+        { color: '#d62d20', priority: 'High', sort: 4 },
+        { color: 'maroon', priority: 'Medium', sort: 3 },
+        { color: 'cornflowerblue', priority: 'Low', sort: 2 },
+        { color: 'forestgreen', priority: 'Very Low', sort: 1 },
+    ];
     return (
         <div className="calendar">
             <div className="calendar-header">
@@ -132,11 +137,20 @@ export default function Home() {
                                         });
 
                                         return (
-                                            <Card key={eventIndex} className="event-card">
+                                            <Card 
+                                                key={eventIndex} 
+                                                className="event-card"
+                                                style={{
+                                                    color: 'white',
+                                                    backgroundColor: colorOptions.find((color) => color.sort === event.priority)?.color,
+                                                }}
+                                                >
                                                 <Card.Meta
-                                                    title={event.eventName}
-                                                    description={eventTime}
-                                                    style={{ width: '100%' }}
+                                                    title={<span style={{ color: 'white' }}>{event.eventName}</span>}
+                                                    description={<span style={{ color: 'white' }}>{eventTime}</span>}
+                                                    style={{ 
+                                                        width: '100%',
+                                                }}
                                                 />
                                             </Card>
                                         );

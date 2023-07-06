@@ -1,0 +1,18 @@
+.color-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .color-button:hover {
+    transform: scale(1.2);
+
+  }
+
+  .color-button.selected {
+    transform: none !important;
+  }
