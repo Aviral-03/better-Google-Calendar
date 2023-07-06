@@ -66,10 +66,11 @@ router.get('/api/users', async (req, res) => {
 router.post('/api/addEvent', async (req, res) => {
     try {
         const dbClient = await dbClientPromise;
-        const { eventName, date, userId, key } = req.body;
+        const { eventName, date, userId, key, priority } = req.body;
         const newEvent = {
             eventName: eventName,
-            date: date
+            date: date,
+            priority: priority,
         };
         // Extract the date from the date string
         const processDate = key.split(' ')[0];
