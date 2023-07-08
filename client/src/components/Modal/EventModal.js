@@ -115,7 +115,7 @@ export default function EventModal({ handleCalendarUpdate }) {
                         <Space.Compact>
                             {colorOptions.map((option) => (
                                 <div
-                                    className={`color-button ${selectedColor === option.color ? 'selected' : ''}`}
+                                    className={`priority-button ${selectedColor === option.color ? 'selected' : ''}`}
                                     key={option.color}
                                     style={{
                                         width: 30,
@@ -124,11 +124,15 @@ export default function EventModal({ handleCalendarUpdate }) {
                                         backgroundColor: option.color,
                                         display: 'inline-block',
                                         cursor: 'pointer',
+
                                         border: selectedColor === option.color ? `2px solid ${option.color}` : 'none',
+                                        transform: selectedColor === option.color ? 'scale(1.2)' : 'none',
+                                        transition: 'transform 0.2s',
                                     }}
                                     onClick={() => handleColorSelect(option.color, option.sort)}
                                     title={option.priority}
                                 />
+                                
                             ))}
                         </Space.Compact>
                     </Form.Item>

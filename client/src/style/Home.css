@@ -51,7 +51,7 @@
 }
 
 .calendar-date {
-  height: calc(100vh - 440px);
+  height: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -71,26 +71,37 @@
   background-color: #F1F5FE;
 }
 
-@media (max-width: 768px) {
-  .calendar-date {
-    height: calc(100vh - 250px); /* Adjust the subtracted value as needed */
-  }
-}
-
-/* Adjust the height for even smaller screens */
-@media (max-width: 480px) {
-  .calendar-date {
-    height: calc(100vh - 300px); /* Adjust the subtracted value as needed */
-  }
-}
-
 .event-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 10px;
+  width: 90%;
 }
+
+.event-card {
+  margin-bottom: 5px;
+}
+
+.event-card-body {
+  display: flex;
+}
+
+.card-time {
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 5px; 
+  color: white;
+  font-weight: 500;
+}
+
+.card-event {
+  font-size: 14px;
+  color: white;
+  font-weight: 300;
+}
+
 
 .date {
   font-size: 12px;
@@ -98,10 +109,3 @@
   margin-bottom: 5px;
 }
 
-.event-card {
-  width: 100%;
-  max-width: 180px;
-  margin-bottom: 10px;
-  height: fit-content;
-  color: #ccc;
-}

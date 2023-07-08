@@ -3,7 +3,9 @@ import '../style/Home.css'; // Import your CSS file for styling
 // import jwt from 'jsonwebtoken';
 import Modal from './Modal/EventModal';
 import dayjs from 'dayjs';
-import { Card } from 'antd';
+import { Button, Popconfirm } from 'antd';
+import { BsInfoCircleFill } from 'react-icons/bs';
+import EventCards from './EventCards';
 
 export default function Home() {
     const numRows = 2;
@@ -88,25 +90,26 @@ export default function Home() {
         { color: 'cornflowerblue', priority: 'Low', sort: 2 },
         { color: 'forestgreen', priority: 'Very Low', sort: 1 },
     ];
+
     return (
         <div className="calendar">
             <div className="calendar-header">
                 <h2 className='month-header'>
-                    {new Date(startDate).toLocaleString('default', { month: 'long' }) === new Date(endDate).toLocaleString('default', { month: 'long' }) 
-                    ? new Date(startDate).toLocaleString('default', {
-                        month: 'long',
-                        year: 'numeric',
-                      }) : 
-                    new Date(startDate).toLocaleString('default', {
-                        month: 'long',
-                        year: 'numeric',
-                      }) - new Date(endDate).toLocaleString('default', {
-                        month: 'long',
-                        year: 'numeric',
-                      })}</h2>
-                <div className="modal">
-                    <Modal handleCalendarUpdate={handleCalendarUpdate} />
-                </div>
+                    {new Date(startDate).toLocaleString('default', { month: 'long' }) === new Date(endDate).toLocaleString('default', { month: 'long' })
+                        ? new Date(startDate).toLocaleString('default', {
+                            month: 'long',
+                            year: 'numeric',
+                        }) :
+                        new Date(startDate).toLocaleString('default', {
+                            month: 'long',
+                            year: 'numeric',
+                        }) - new Date(endDate).toLocaleString('default', {
+                            month: 'long',
+                            year: 'numeric',
+                        })}</h2>
+            </div>
+            <div>
+                <Modal handleCalendarUpdate={handleCalendarUpdate} />
             </div>
             <div className="calendar-grid">
                 {weekDays.map((day, index) => (
@@ -128,33 +131,13 @@ export default function Home() {
                                         : 'calendar-date'
                                 }
                             >
-                                <div className="date">{date.getDate() === new Date().getDate() ? 'Today' : date.getDate()}</div>
+                                <div className="date">
+                                    {date.getDate() === new Date().getDate() ? 'Today' : date.getDate()}
+                                </div>
                                 <div className="event-container">
-                                    {eventsForDate.map((event, eventIndex) => {
-                                        const eventTime = new Date(event.date).toLocaleTimeString([], {
-                                            hour: 'numeric',
-                                            minute: '2-digit',
-                                        });
-
-                                        return (
-                                            <Card 
-                                                key={eventIndex} 
-                                                className="event-card"
-                                                style={{
-                                                    color: 'white',
-                                                    backgroundColor: colorOptions.find((color) => color.sort === event.priority)?.color,
-                                                }}
-                                                >
-                                                <Card.Meta
-                                                    title={<span style={{ color: 'white' }}>{event.eventName}</span>}
-                                                    description={<span style={{ color: 'white' }}>{eventTime}</span>}
-                                                    style={{ 
-                                                        width: '100%',
-                                                }}
-                                                />
-                                            </Card>
-                                        );
-                                    })}
+                                    {eventsForDate.map((event, eventIndex) => (
+                                        <EventCards key={eventIndex} event={event} colorOptions={colorOptions} />
+                                    ))}
                                 </div>
                             </div>
                         );
