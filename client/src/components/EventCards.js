@@ -1,12 +1,11 @@
 import React from "react";
 import { Popconfirm } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BsInfoCircleFill } from "react-icons/bs";
 
 export default function EventCards({ event, colorOptions }) {
 
     const [open, setOpen] = useState(false);
-    const [confirmLoading, setConfirmLoading] = useState(false);
 
     const eventTime = new Date(event.date).toLocaleTimeString([], {
         hour: 'numeric',
@@ -33,23 +32,24 @@ export default function EventCards({ event, colorOptions }) {
             onConfirm={handleOk}
             okText="Completed"
             cancelText="Cancel"
+            onCancel={handleCancel}
             icon={<BsInfoCircleFill style={{ color: 'red' }} />}
         >
             <button
-                className="card event-card"
+                className="card event-card-button"
                 style={{
                     backgroundColor: colorOptions.find(
                         (color) => color.sort === event.priority
                     )?.color,
-                    width: '100%',
-                }}
+                    // transform: cardTransform,
+                }}  
                 onClick={() => {
                     showPopconfirm();
                 }}
             >
-                <div className="card-body event-card-body">
-                    <span className="card-time">{eventTime}</span>
-                    <span className="card-event">{event.eventName}</span>
+                <div className="card-body button-body">
+                    <span className="event-time">{eventTime}</span>
+                    <span className="event-text">{event.eventName}</span>
                 </div>
             </button>
         </Popconfirm>

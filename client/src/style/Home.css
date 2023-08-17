@@ -1,7 +1,7 @@
 .calendar {
-  max-width: 100%;
+  width: 95%;
   padding: 0 10px 0 10px;
-  background-color: #ffff;
+  background-color: #fff;
 }
 
 .calendar-header {
@@ -10,6 +10,120 @@
   flex-direction: row;
   align-items: center;
 }
+
+.calendar-container {
+  margin-top: 20px;
+  background-color: #fff;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.days-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0 10px 0;
+  height: 40px;
+  border-bottom: 1px solid #ccc;
+}
+
+.day-cell {
+  text-align: center;
+  font-weight: bold;
+  flex: 1;
+}
+
+.date-row {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  height: calc(50vh - 60px);
+  border-bottom: 1px solid #ccc;
+}
+
+.date-cell {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 10px;
+  border-right: 0.5px solid #ccc;
+  flex: 1;
+  font-weight: 500;
+  font-size: 12px;
+  min-width: 100px;
+}
+
+.date-cell.collapsed .event-container {
+  height: 0;
+  overflow: hidden;
+}
+
+
+.date-row.last-child {
+  border-bottom: none;
+}
+
+.date-cell:last-child {
+  border-right: none;
+}
+
+
+/* Custom Styling for calendar */
+
+.date-cell.current {
+  background-color: #f1f5fe;
+  color: #1E90FF;
+}
+
+
+
+/* Custom Styling for cards */
+
+.event-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+  /* overflow: hidden; */
+}
+
+
+.event-cards {
+  width: 100%;
+}
+
+.event-card-button {
+  transition: transform 0.3s ease;
+  width: 100%;
+}
+
+.event-card-button:hover {
+  transform: scale(1.01);
+}
+
+.button-body {
+  display: flex;
+  width: 100%;
+}
+
+.event-time {
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 5px; 
+  color: white;
+  font-weight: 500;
+}
+
+.event-text {
+  font-size: 14px;
+  color: white;
+  font-weight: 300;
+}
+
+
+/* 
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -108,4 +222,13 @@
   font-weight: bold;
   margin-bottom: 5px;
 }
+
+
+.grid-outline {
+  border: 1px solid #ccc;
+}
+
+.grid-outline-dates {
+  height: 300px;
+} */
 

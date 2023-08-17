@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import '../style/Home.css'; // Import your CSS file for styling
-// import jwt from 'jsonwebtoken';
 import Modal from './Modal/EventModal';
 import dayjs from 'dayjs';
 import { Button, Popconfirm } from 'antd';
 import { BsInfoCircleFill } from 'react-icons/bs';
 import EventCards from './EventCards';
+import { Container, Row, Col } from 'react-bootstrap';
 
 export default function Home() {
     const numRows = 2;
     const numCols = 7 * Number(numRows);
-
+    const eventContainerRef = useRef(null);
+    const dateCellRefs = useRef(null);
     const [weekDays, setWeekDays] = useState([]);
     const [weekDates, setWeekDates] = useState([]);
     const [startDate, setStartDate] = useState();
@@ -21,6 +22,9 @@ export default function Home() {
         generateWeekDates();
     }, []);
 
+    useEffect(() => {
+      }, [events]);
+      
     function generateWeekDates() {
         const weekDates = [];
         const weekDays = [];
@@ -43,12 +47,10 @@ export default function Home() {
     }
 
     const handleCalendarUpdate = (e) => {
-        // e.preventDefault();
         if (e) {
             updateCalendarEvents(startDate, endDate);
         }
     };
-
     async function updateCalendarEvents(startDate, endDate) {
         setStartDate(startDate);
         setEndDate(endDate);
@@ -107,42 +109,81 @@ export default function Home() {
                             month: 'long',
                             year: 'numeric',
                         })}</h2>
-            </div>
-            <div>
+                        <div>
                 <Modal handleCalendarUpdate={handleCalendarUpdate} />
             </div>
-            <div className="calendar-grid">
-                {weekDays.map((day, index) => (
-                    <div key={index} className={day === dayjs().format('dddd') ? 'calendar-day current' : 'calendar-day'}>
-                        {day}
+            </div>
+            <div className="calendar-container">
+                <div className="row">
+                    <div className="col">
+                        <div className="days-row">
+                            {weekDays.map((day, index) => (
+                                <div
+                                    key={index}
+                                    className={day === dayjs().format('dddd') ? 'day-cell current' : 'day-cell'}
+                                    style={{fontWeight: 300, fontSize: 14}}
+                                    >
+                                    {day}
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                ))}
-                {events &&
-                    weekDates.map((date, index) => {
-                        const eventsForDate = events.filter(
-                            (event) => new Date(event.date).getDate() === date.getDate()
-                        );
-                        return (
-                            <div
-                                key={index}
-                                className={
-                                    date.getDate() === new Date().getDate()
-                                        ? 'calendar-date current'
-                                        : 'calendar-date'
-                                }
-                            >
-                                <div className="date">
-                                    {date.getDate() === new Date().getDate() ? 'Today' : date.getDate()}
-                                </div>
-                                <div className="event-container">
-                                    {eventsForDate.map((event, eventIndex) => (
-                                        <EventCards key={eventIndex} event={event} colorOptions={colorOptions} />
-                                    ))}
-                                </div>
-                            </div>
-                        );
-                    })}
-
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <div className="date-row">
+                            {events && weekDates.slice(0, 7).map((date, index) => {
+                                const eventsForDate = events.filter(
+                                    (event) => new Date(event.date).getDate() === date.getDate()
+                                );
+                                return (
+                                    <div key={index}
+                                        className={date.getDate() === new Date().getDate() ? 'date-cell current' : 'date-cell'}
+                                        ref={dateCellRefs}>
+                                        <div className="date">
+                                            {date.getDate() === new Date().getDate() ? 'Today' : date.getDate()}
+                                        </div>
+                                        <div 
+                                            className="event-container"
+                                            ref={eventContainerRef}
+                                            >
+                                            {eventsForDate.map((event, eventIndex) => (
+                                                <div 
+                                                key={eventIndex} 
+                                                className='event-cards'
+                                                >
+                                                    <EventCards key={eventIndex} event={event} colorOptions={colorOptions} />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <div className="date-row last-child">
+                            {events && weekDates.slice(7).map((date, index) => {
+                                const eventsForDate = events.filter(
+                                    (event) => new Date(event.date).getDate() === date.getDate()
+                                );
+                                return (
+                                    <div key={index}
+                                        className='date-cell'>
+                                        <div className="date">{date.getDate()}</div>
+                                        <div className="event-container">
+                                            {eventsForDate.map((event, eventIndex) => (
+                                                <EventCards key={eventIndex} event={event} colorOptions={colorOptions} />
+                                            ))}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

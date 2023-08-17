@@ -12,6 +12,7 @@ router.post('/api/register', async (req, res) => {
     try {
         const dbClient = await dbClientPromise;
         const document = {
+            name: req.body.name,
             username: req.body.username,
             password: req.body.password
         };
@@ -38,7 +39,6 @@ router.post('/api/login', async (req, res) => {
             username: req.body.username,
             password: req.body.password
         });
-
         if (result) {
             const token = jwt.sign({
                 _id: req.body.username
@@ -88,7 +88,7 @@ router.post('/api/addEvent', async (req, res) => {
         console.error(err);
         res.json({ status: 'error', message: 'An error occurred.' });
     }
-
+ 
 });
 
 

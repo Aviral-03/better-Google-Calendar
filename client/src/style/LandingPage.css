@@ -1,0 +1,114 @@
+.landing-page-body {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+}
+
+.containers-wrapper {
+    display: flex;
+}
+
+.login-container,
+.info-container {
+    padding: 20px;
+}
+
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    flex: 2;
+}
+
+.login-container.body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: max-content;
+}
+
+/* Define the CSS animation */
+@keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .registration-event {
+    animation: fadeInComingDown 1s ease-in-out;
+  }
+
+  .registration-event.active {
+    animation: fadeIn 1s ease-in-out;
+  }
+
+.login-container.title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-block-end: 10px;
+}
+
+.login-container.title h1 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+/* Corrected keyframes syntax */
+@keyframes fadeInComingDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-container.form {
+    width: 100%;
+    display: flex;
+    animation: fadeInComingDown 1s ease-in-out;
+}
+
+
+.login-form.body {
+    width: 100%;
+    animation: fadeInComingDown 1s ease-in-out;
+}
+
+.login-container body {
+    background-color: #ffffff;
+}
+
+.register-form.body {
+    width: 100%;
+    animation: fadeInComingDown 1s ease-in-out;
+}
+
+
+.info-container {
+    background-color: #f7f7f7;
+    flex: 1.5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

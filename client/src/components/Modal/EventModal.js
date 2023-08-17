@@ -82,7 +82,6 @@ export default function EventModal({ handleCalendarUpdate }) {
         setSelectedColor(color);
         setSelectedPriority(sort);
     };
-    console.log(selectedPriority);
     return (
         <div>
             <Button type="primary" onClick={showModal}>
