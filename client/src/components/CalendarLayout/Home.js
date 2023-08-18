@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
-import '../style/Home.css'; // Import your CSS file for styling
-import Modal from './Modal/EventModal';
+import Modal from '../Modal/EventModal';
 import dayjs from 'dayjs';
-import { Button, Popconfirm } from 'antd';
-import { BsInfoCircleFill } from 'react-icons/bs';
 import EventCards from './EventCards';
-import { Container, Row, Col } from 'react-bootstrap';
+import '../../style/Home.css';
+import BsPlusCircle from 'react-icons/bs';
 
 export default function Home() {
     const numRows = 2;
@@ -109,9 +107,9 @@ export default function Home() {
                             month: 'long',
                             year: 'numeric',
                         })}</h2>
-                        <div>
-                <Modal handleCalendarUpdate={handleCalendarUpdate} />
-            </div>
+                <Modal
+                    icon={<BsPlusCircle />}
+                    handleCalendarUpdate={handleCalendarUpdate} />
             </div>
             <div className="calendar-container">
                 <div className="row">

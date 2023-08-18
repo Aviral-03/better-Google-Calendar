@@ -43,11 +43,11 @@ export default function Login({ handleRegistrationEvent}) {
             });
             const data = await response.json();
             if (data.status === "ok") {
-                dispatch(setAuth({authenticated: true, token: data.user}));
-                // success();
-                // setTimeout(() => {
-                //     dispatch(setAuth({authenticated: true, token: data.user}));
-                // }, 2500);
+                console.log("Successfully logged in");
+                success();
+                setTimeout(() => {
+                    dispatch(setAuth({auth: true, token: data.user}));
+                }, 2500);
             }
             else {
                 error("Invalid username or password");

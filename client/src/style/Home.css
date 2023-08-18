@@ -1,18 +1,20 @@
 .calendar {
-  width: 95%;
-  padding: 0 10px 0 10px;
-  background-color: #fff;
+  width: 99%;
+  background-color: hsl(0, 0%, 100%);
 }
-
 .calendar-header {
   display: flex;
-  justify-content: space-around;
-  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
+  margin-top: 20px;
 }
 
+.month-header {
+  text-align: center;
+  flex: 1;
+}
 .calendar-container {
-  margin-top: 20px;
+  margin: 20px;
   background-color: #fff;
   width: 100%;
   border: 1px solid #ccc;
@@ -121,114 +123,3 @@
   color: white;
   font-weight: 300;
 }
-
-
-/* 
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 5px;
-}
-
-.calendar-cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #ffff;
-  border: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-}
-
-.calendar-day,
-.calendar-date {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: 25px;
-  font-weight: bold;
-  background-color: #ffff;
-  border: 1px solid #ccc;
-  padding: 5px 0 5px 0;
-}
-
-.calendar-day {
-  align-items: center;
-  justify-content: center;
-  border-bottom: none;
-  font-weight: 300;
-}
-
-.calendar-date {
-  height: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-top: none;
-  font-weight: 500;
-}
-
-.calendar-date.current {
-  background-color: #f1f5fe;
-}
-
-.calendar-date.current .date {
-  color: #1E90FF;
-}
-
-.calendar-day.current {
-  background-color: #F1F5FE;
-}
-
-.event-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-  width: 90%;
-}
-
-.event-card {
-  margin-bottom: 5px;
-}
-
-.event-card-body {
-  display: flex;
-}
-
-.card-time {
-  font-size: 14px;
-  font-weight: bold;
-  margin-right: 5px; 
-  color: white;
-  font-weight: 500;
-}
-
-.card-event {
-  font-size: 14px;
-  color: white;
-  font-weight: 300;
-}
-
-
-.date {
-  font-size: 12px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-
-.grid-outline {
-  border: 1px solid #ccc;
-}
-
-.grid-outline-dates {
-  height: 300px;
-} */
-
