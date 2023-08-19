@@ -43,10 +43,9 @@ export default function Login({ handleRegistrationEvent}) {
             });
             const data = await response.json();
             if (data.status === "ok") {
-                console.log("Successfully logged in");
                 success();
                 setTimeout(() => {
-                    dispatch(setAuth({auth: true, token: data.user}));
+                    dispatch(setAuth({auth: true, token: data.user, objectId: data.objectId}));
                 }, 2500);
             }
             else {

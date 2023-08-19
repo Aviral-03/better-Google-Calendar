@@ -1,12 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Modal from '../Modal/EventModal';
+import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import EventCards from './EventCards';
 import '../../style/Home.css';
-import BsPlusCircle from 'react-icons/bs';
+import { Select, Card } from 'antd';
+import Logout from "../Logout"
 
 export default function Home() {
-    const numRows = 2;
+    const objectId = useSelector((state) => state.auth.objectId);
+    const [numRows, setNumRows] = useState(2);
     const numCols = 7 * Number(numRows);
     const eventContainerRef = useRef(null);
     const dateCellRefs = useRef(null);
@@ -17,16 +20,35 @@ export default function Home() {
     const [events, setEvents] = useState();
 
     useEffect(() => {
-        generateWeekDates();
-    }, []);
+        generateWeekDates(numRows);
+    }, [numRows]);
 
     useEffect(() => {
-      }, [events]);
-      
+    }, [events]);
+
+    function changeGrid(num) {
+        setNumRows(num);
+        generateWeekDates(num);
+    }
     function generateWeekDates() {
         const weekDates = [];
         const weekDays = [];
         const currentDate = new Date();
+        let endDate;
+        if (numRows === 2) {
+            endDate = new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth(),
+                currentDate.getDate() + 13
+            );
+        } else {
+            endDate = new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth() + 1,
+                currentDate.getDate() - 1
+            );
+        }
+
         for (let i = 0; i < numCols; i++) {
             const date = new Date(
                 currentDate.getFullYear(),
@@ -60,7 +82,7 @@ export default function Home() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    userId: "64a1ed3a74a5f3820060e9d0",
+                    userId: objectId, 
                 })
             });
             const data = await response.json();
@@ -94,93 +116,115 @@ export default function Home() {
     return (
         <div className="calendar">
             <div className="calendar-header">
-                <h2 className='month-header'>
+                <Select
+                    className='select-month'
+                    defaultValue={2}
+                    style={{ width: 120 }}
+                    onChange={(value) => {
+                        changeGrid(value);
+                    }}
+                >
+                    <Select.Option value={1}>1 Week</Select.Option>
+                    <Select.Option value={2}>2 Weeks</Select.Option>
+                    <Select.Option value={4}>1 Month</Select.Option>
+                </Select>
+                <h2
+                    style={{ fontWeight: 600, fontSize: 32 }}
+                    className='month-header'>
                     {new Date(startDate).toLocaleString('default', { month: 'long' }) === new Date(endDate).toLocaleString('default', { month: 'long' })
-                        ? new Date(startDate).toLocaleString('default', {
+                        ? (new Date(startDate).toLocaleString('default', {
                             month: 'long',
-                            year: 'numeric',
-                        }) :
+                        })).toLocaleUpperCase() :
                         new Date(startDate).toLocaleString('default', {
                             month: 'long',
-                            year: 'numeric',
                         }) - new Date(endDate).toLocaleString('default', {
                             month: 'long',
-                            year: 'numeric',
                         })}</h2>
                 <Modal
-                    icon={<BsPlusCircle />}
                     handleCalendarUpdate={handleCalendarUpdate} />
+                <Logout/>
             </div>
             <div className="calendar-container">
-                <div className="row">
+                <div 
+                className="row">
                     <div className="col">
-                        <div className="days-row">
+                        <div 
+                        className="days-row">
                             {weekDays.map((day, index) => (
                                 <div
                                     key={index}
                                     className={day === dayjs().format('dddd') ? 'day-cell current' : 'day-cell'}
-                                    style={{fontWeight: 300, fontSize: 14}}
-                                    >
+                                    style={{ fontWeight: 300, fontSize: 14 }}
+                                >
                                     {day}
                                 </div>
                             ))}
                         </div>
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col">
-                        <div className="date-row">
-                            {events && weekDates.slice(0, 7).map((date, index) => {
-                                const eventsForDate = events.filter(
-                                    (event) => new Date(event.date).getDate() === date.getDate()
-                                );
-                                return (
-                                    <div key={index}
-                                        className={date.getDate() === new Date().getDate() ? 'date-cell current' : 'date-cell'}
-                                        ref={dateCellRefs}>
-                                        <div className="date">
-                                            {date.getDate() === new Date().getDate() ? 'Today' : date.getDate()}
-                                        </div>
-                                        <div 
-                                            className="event-container"
-                                            ref={eventContainerRef}
-                                            >
-                                            {eventsForDate.map((event, eventIndex) => (
-                                                <div 
-                                                key={eventIndex} 
-                                                className='event-cards'
+                <div className="grid-layout">
+                    {Array.from({ length: numRows }).map((_, rowIndex) => (
+                        <div className="row" key={rowIndex}>
+                            <div className="col">
+                                <div 
+                                style={{ height: `calc(${100 / numRows}vh - ${150 / numRows}px)` }}
+                                className="date-row">
+                                    {events &&
+                                        weekDates.slice(
+                                            rowIndex * 7,
+                                            rowIndex * 7 + 7
+                                        ).map((date, index) => {
+                                            const eventsForDate = events.filter(
+                                                (event) =>
+                                                    new Date(event.date).getDate() ===
+                                                    date.getDate()
+                                            );
+                                            return (
+                                                <div
+                                                    key={index}
+                                                    className={
+                                                        date.getDate() ===
+                                                            new Date().getDate()
+                                                            ? 'date-cell current'
+                                                            : 'date-cell'
+                                                    }
+                                                    ref={dateCellRefs}
                                                 >
-                                                    <EventCards key={eventIndex} event={event} colorOptions={colorOptions} />
+                                                    <div className="date">
+                                                        {date.getDate() ===
+                                                            new Date().getDate()
+                                                            ? 'Today'
+                                                            : date.getDate()}
+                                                    </div>
+                                                    <div
+                                                        className="event-container"
+                                                        ref={eventContainerRef}
+                                                    >
+                                                        {eventsForDate.map(
+                                                            (event, eventIndex) => (
+                                                                <div
+                                                                    key={eventIndex}
+                                                                    className="event-cards"
+                                                                >
+                                                                    <EventCards key={
+                                                                            eventIndex
+                                                                        }
+                                                                        event={event}
+                                                                        colorOptions={
+                                                                            colorOptions
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            )
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                                            );
+                                        })}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col">
-                        <div className="date-row last-child">
-                            {events && weekDates.slice(7).map((date, index) => {
-                                const eventsForDate = events.filter(
-                                    (event) => new Date(event.date).getDate() === date.getDate()
-                                );
-                                return (
-                                    <div key={index}
-                                        className='date-cell'>
-                                        <div className="date">{date.getDate()}</div>
-                                        <div className="event-container">
-                                            {eventsForDate.map((event, eventIndex) => (
-                                                <EventCards key={eventIndex} event={event} colorOptions={colorOptions} />
-                                            ))}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
+                    ))}
                 </div>
             </div>
         </div>

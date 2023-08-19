@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     authenticated: false,
-    token: ""
+    token: "",
+    objectId: "",
 }
 
 const authSlice = createSlice({
@@ -13,7 +14,8 @@ const authSlice = createSlice({
             return {
                 ...state,
                 authenticated: action.payload.auth,
-                token: action.payload.token
+                token: action.payload.token,
+                objectId: action.payload.objectId
             };
         }
     }

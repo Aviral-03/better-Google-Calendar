@@ -21,9 +21,6 @@ export default function App() {
                                 <h1 className={registerStatus ? "registration-event active" : "registration-event"} style={{ color: "black", marginBottom: "20px" }}>
                                     {registerStatus ? "Welcome to RPM" : "Welcome Back!"}
                                 </h1>
-                                {/* <h5 style={{ fontWeight: 200, fontSize: "18px", width: "70%" }}>
-                                    RPM offers students advanced trading and portfolio management features that allow them to focus their time on the portfolio design and management process
-                                </h5> */}
                             </div>
                             <div className="login-container form">
                                 {registerStatus ? <Register handleRegistrationEvent={handleRegistrationEvent} /> : <Login handleRegistrationEvent={handleRegistrationEvent} />}

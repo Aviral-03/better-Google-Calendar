@@ -112,3 +112,27 @@
     justify-content: center;
     align-items: center;
 }
+
+
+
+
+/*
+Logout CSS
+*/
+
+.logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  width: 20px;
+  transition: all 0.2s;
+}
+
+.logout:hover {
+  color: #ff0000;
+  font-size: 28px;
+}

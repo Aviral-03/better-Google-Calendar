@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { setAuth } from '../../redux/authReducer';
 import { Button, Form, Input, message } from 'antd'
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import "../../style/LandingPage.css";
@@ -9,6 +11,8 @@ export default function Register({handleRegistrationEvent}) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [messageApi, contextHolder] = message.useMessage();
+    const dispatch = useDispatch();
+
     const error = (err) => {
         message.open({
             type: 'error',
@@ -57,7 +61,9 @@ export default function Register({handleRegistrationEvent}) {
             const data = await response.json();
             if (data.status === "ok") {
                 success();
-                window.location.href = "/home";
+                setTimeout(() => {
+                    dispatch(setAuth({auth: true, token: data.user, objectId: data.objectId}));
+                }, 2500);
             }
             else {
                 error("User already Exist");

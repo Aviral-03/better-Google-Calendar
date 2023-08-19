@@ -2,8 +2,11 @@ import React, { useState, useRef } from "react";
 import { Button, Modal, Form, Input, DatePicker, Space } from "antd";
 import dayjs from 'dayjs';
 import '../../style/EventModal.css'
+import { PlusCircleOutlined } from '@ant-design/icons';
+import { useSelector } from "react-redux";
 
 export default function EventModal({ handleCalendarUpdate }) {
+    const objectId = useSelector((state) => state.auth.objectId);
     const [open, setOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [selectedColor, setSelectedColor] = useState(null);
@@ -53,11 +56,12 @@ export default function EventModal({ handleCalendarUpdate }) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    userId: "64a1ed3a74a5f3820060e9d0",
+                    userId: objectId,
                     key: formattedDate,
                     eventName: formDetails.eventName,
                     date: formDetails.date,
                     priority: formDetails.priority,
+                    status: "pending",
                 })
             });
             const data = await response.json();
@@ -84,8 +88,13 @@ export default function EventModal({ handleCalendarUpdate }) {
     };
     return (
         <div>
-            <Button type="primary" onClick={showModal}>
-                Open Modal with async logic
+            <Button
+                type="dashed"
+                onClick={showModal}
+                className="add-event-button"
+                style={{marginRight: "15px"}}
+                icon={<PlusCircleOutlined />}>
+                Add a new Event
             </Button>
             <Modal
                 title="Add a new event"

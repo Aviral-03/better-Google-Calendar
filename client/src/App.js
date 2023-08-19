@@ -6,7 +6,6 @@ import './style/App.css'
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.authenticated)
-  console.log(isAuthenticated);
   return (
     <div className="App">
       {isAuthenticated ? <Home /> : <LandingPage />}

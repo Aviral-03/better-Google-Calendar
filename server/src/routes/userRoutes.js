@@ -26,7 +26,14 @@ router.post('/api/register', async (req, res) => {
         }
 
         const result = await dbClient.collection('userdata').insertOne(document);
-        res.json({ status: 'ok' });
+        if (result.insertedCount === 1) {
+            const token = jwt.sign({
+                _id: req.body.username
+            }, JWT_KEY);
+            return res.json({ status: 'ok', user: token, objectId: result.insertedId });
+        } else {
+            return res.json({ status: 'error', error: 'Failed to insert user.' });
+        }
     } catch (err) {
         res.json({ status: 'error' });
     }
@@ -43,7 +50,7 @@ router.post('/api/login', async (req, res) => {
             const token = jwt.sign({
                 _id: req.body.username
             }, JWT_KEY);
-            return res.json({ status: 'ok', user: token });
+            return res.json({ status: 'ok', user: token, objectId: result._id });
         } else {
             return res.json({ status: 'error', user: false });
         }
@@ -56,7 +63,6 @@ router.get('/api/users', async (req, res) => {
     try {
         const dbClient = await dbClientPromise;
         const users = await dbClient.collection('userdata').find({}).toArray();
-        // console.log(users);
         res.json(users);
     } catch (err) {
         res.json({ status: 'error' });
@@ -71,6 +77,7 @@ router.post('/api/addEvent', async (req, res) => {
             eventName: eventName,
             date: date,
             priority: priority,
+            status: "pending",
         };
         // Extract the date from the date string
         const processDate = key.split(' ')[0];
@@ -120,6 +127,51 @@ router.get('/api/users/:id', async (req, res) => {
         res.json(user);
     } catch (err) {
         res.json({ status: 'error' });
+    }
+});
+
+
+router.delete('/api/deleteEvent', async (req, res) => {
+    try {
+        const dbClient = await dbClientPromise;
+        const { userId, key, priority, eventName, eventDate } = req.body;
+        const result = await dbClient.collection('userdata').updateOne(
+            { _id: new ObjectId(userId) },
+            { $pull: { [`events.${key}`]: { eventName: eventName, priority: priority, date: eventDate } } }
+        );
+        if (result.modifiedCount === 1) {
+            res.json({ status: 'ok' });
+        } else {
+            res.json({ status: 'error', message: 'Failed to delete event.' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.json({ status: 'error', message: 'An error occurred.' });
+    }
+});
+
+router.put('/api/updateEvent', async (req, res) => {
+    try {
+        const dbClient = await dbClientPromise;
+        const { userId, key, priority, eventName, eventDate, status } = req.body;
+        const result = await dbClient.collection('userdata').updateOne(
+            { 
+                _id: new ObjectId(userId),
+                [`events.${key}.eventName`]: eventName,
+                [`events.${key}.priority`]: priority,
+                [`events.${key}.date`]: eventDate,
+            },
+            { $set: { [`events.${key}.$.status`]: status } },            
+        );
+        if (result.modifiedCount === 1) {
+            res.json({ status: 'ok' });
+        }
+        else {
+            res.json({ status: 'error', message: 'Failed to update event.' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.json({ status: 'error', message: 'An error occurred.' });
     }
 });
 
