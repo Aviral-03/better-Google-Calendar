@@ -89,14 +89,30 @@
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  overflow-clip-margin: border-box;
   padding: 5px;
 }
 
+.date {
+  padding: 5px;
+}
 
 .event-cards {
   width: 100%;
   margin-bottom: 2px;
+  transform: translateX(0%); /* Start off-screen to the left */
+  animation: appear 1s ease; /* Transition for smooth animation */
+}
+
+@keyframes appear {
+  0% {
+      opacity: 0;
+      transform: translateX(-20px);
+  }
+
+  100% {
+      opacity: 1;
+      transform: translateX(0);
+  }
 }
 
 .event-card-button {

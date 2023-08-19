@@ -18,6 +18,7 @@ export default function Home() {
     const [startDate, setStartDate] = useState();
     const [endDate, setEndDate] = useState();
     const [events, setEvents] = useState();
+    const [calendarHeader, setCalendarHeader] = useState();
 
     useEffect(() => {
         generateWeekDates(numRows);
@@ -64,6 +65,10 @@ export default function Home() {
         }
         setWeekDates(weekDates);
         updateCalendarEvents(dayjs(weekDates[0]).format('YYYY-MM-DD'), dayjs(weekDates[weekDates.length - 1]).format('YYYY-MM-DD'));
+        const startMonth = weekDates[0].toLocaleString('default', { month: 'long' });
+        const endMonth = weekDates[weekDates.length - 1].toLocaleString('default', { month: 'long' });
+        const monthHeader = startMonth === endMonth ? startMonth : `${startMonth} - ${endMonth}`;
+        setCalendarHeader(monthHeader);
     }
 
     const handleCalendarUpdate = (e) => {
@@ -128,18 +133,9 @@ export default function Home() {
                     <Select.Option value={2}>2 Weeks</Select.Option>
                     <Select.Option value={4}>1 Month</Select.Option>
                 </Select>
-                <h2
+                {calendarHeader && <h2
                     style={{ fontWeight: 600, fontSize: 32 }}
-                    className='month-header'>
-                    {new Date(startDate).toLocaleString('default', { month: 'long' }) === new Date(endDate).toLocaleString('default', { month: 'long' })
-                        ? (new Date(startDate).toLocaleString('default', {
-                            month: 'long',
-                        })).toLocaleUpperCase() :
-                        new Date(startDate).toLocaleString('default', {
-                            month: 'long',
-                        }) - new Date(endDate).toLocaleString('default', {
-                            month: 'long',
-                        })}</h2>
+                    className='month-header'>{calendarHeader}</h2>}
                 <Modal
                     handleCalendarUpdate={handleCalendarUpdate} />
                 <Logout/>

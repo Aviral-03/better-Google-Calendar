@@ -2,9 +2,9 @@ import React from "react";
 import { Popconfirm, message } from "antd";
 import { useState, useEffect } from "react";
 import { BsInfoCircleFill } from "react-icons/bs";
-import "../../style/EventCards.css";
 import { useSelector } from "react-redux";
 import dayjs from 'dayjs';
+import "../../style/EventCards.css";
 
 export default function EventCards({ event, colorOptions }) {
     const [open, setOpen] = useState("pending");
@@ -103,7 +103,7 @@ export default function EventCards({ event, colorOptions }) {
             onCancel={() => deleteEvent()}
             icon={<BsInfoCircleFill style={{ color: 'red' }} />}
             cancelButtonProps={{ danger: true }}
-            disabled={taskStatus === 'complete' ? true : false}
+            okButtonProps={{disabled: taskStatus === 'complete' ? true : false}}
         >
             <button
                 className="card event-card-button"
