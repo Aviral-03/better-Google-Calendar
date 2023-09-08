@@ -72,30 +72,85 @@ router.get('/api/users', async (req, res) => {
 router.post('/api/addEvent', async (req, res) => {
     try {
         const dbClient = await dbClientPromise;
-        const { eventName, date, userId, key, priority } = req.body;
+        const { eventName, date, userId, key, priority, frequency } = req.body;
         const newEvent = {
             eventName: eventName,
             date: date,
             priority: priority,
             status: "pending",
+            frequency: frequency,
         };
+
         // Extract the date from the date string
         const processDate = key.split(' ')[0];
-        const result = await dbClient.collection('userdata').updateOne(
-            { _id: new ObjectId(userId) },
-            { $push: { [`events.${processDate}`]: newEvent } }
-        );
+        const startDate = new Date(date);
+        const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 4, startDate.getDate());
+        const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
 
-        if (result.modifiedCount === 1) {
-            res.json({ status: 'ok' });
-        } else {
-            res.json({ status: 'error', message: 'Failed to insert event.' });
+        async function addToDatabase(date, newEvent) {
+            try {
+                await dbClient.collection('userdata').updateOne(
+                    { _id: new ObjectId(userId) },
+                    { $push: { [`events.${date}`]: newEvent } }
+                );
+            } catch (error) {
+                throw error;
+            }
         }
+
+        if (frequency === 'none') {
+            await addToDatabase(processDate, newEvent);
+        } else if (frequency === "daily") {
+            for (let i = 0; i < days; i++) {
+                const newDate = new Date(startDate); 
+                newDate.setDate(startDate.getDate() + i);
+                newDate.setHours(startDate.getHours());
+                newDate.setMinutes(startDate.getMinutes());
+                newDate.setSeconds(startDate.getSeconds());
+                newEvent.date = newDate;
+                await addToDatabase(newDate.toISOString().split('T')[0], newEvent);
+            }
+        }
+        else if (frequency === "biweekly") {
+            for (let i = 0; i < days; i += 14) {
+                const newDate = new Date(startDate); 
+                newDate.setDate(startDate.getDate() + i);
+                newDate.setHours(startDate.getHours());
+                newDate.setMinutes(startDate.getMinutes());
+                newDate.setSeconds(startDate.getSeconds());
+                newEvent.date = newDate;
+                await addToDatabase(newDate.toISOString().split('T')[0], newEvent);
+            }
+        }
+        else if (frequency === "weekly") {
+            for (let i = 0; i < days; i += 7) {
+                const newDate = new Date(startDate);
+                newDate.setDate(startDate.getDate() + i);
+                newDate.setHours(startDate.getHours());
+                newDate.setMinutes(startDate.getMinutes());
+                newDate.setSeconds(startDate.getSeconds());
+                newEvent.date = newDate;
+                await addToDatabase(newDate.toISOString().split('T')[0], newEvent);
+            }
+        }        
+        else if (frequency === "monthly") {
+            for (let i = 0; i < days; i += 30) {
+                const newDate = new Date(startDate);
+                newDate.setDate(startDate.getDate() + i);
+                newDate.setHours(startDate.getHours());
+                newDate.setMinutes(startDate.getMinutes());
+                newDate.setSeconds(startDate.getSeconds());
+                newEvent.date = newDate;
+                await addToDatabase(newDate.toISOString().split('T')[0], newEvent);
+            }
+        }
+
+        res.json({ status: 'ok' });
+
     } catch (err) {
         console.error(err);
         res.json({ status: 'error', message: 'An error occurred.' });
     }
- 
 });
 
 
@@ -155,13 +210,13 @@ router.put('/api/updateEvent', async (req, res) => {
         const dbClient = await dbClientPromise;
         const { userId, key, priority, eventName, eventDate, status } = req.body;
         const result = await dbClient.collection('userdata').updateOne(
-            { 
+            {
                 _id: new ObjectId(userId),
                 [`events.${key}.eventName`]: eventName,
                 [`events.${key}.priority`]: priority,
                 [`events.${key}.date`]: eventDate,
             },
-            { $set: { [`events.${key}.$.status`]: status } },            
+            { $set: { [`events.${key}.$.status`]: status } },
         );
         if (result.modifiedCount === 1) {
             res.json({ status: 'ok' });

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Button, Modal, Form, Input, DatePicker, Space } from "antd";
+import { Button, Modal, Form, Input, DatePicker, Space, Select } from "antd";
 import dayjs from 'dayjs';
 import '../../style/EventModal.css'
 import { PlusCircleOutlined } from '@ant-design/icons';
@@ -30,7 +30,8 @@ export default function EventModal({ handleCalendarUpdate }) {
                 const formDetails = {
                     eventName: values.eventName,
                     date: values.date,
-                    priority: selectedPriority,
+                    priority: selectedPriority, // Use selectedPriority here
+                    frequency: values.frequency,
                 };
                 processForm(formDetails);
             })
@@ -39,6 +40,7 @@ export default function EventModal({ handleCalendarUpdate }) {
             });
         setSelectedColor(null);
     };
+
 
     const handleCancel = () => {
         const form = formRef.current;
@@ -62,6 +64,7 @@ export default function EventModal({ handleCalendarUpdate }) {
                     date: formDetails.date,
                     priority: formDetails.priority,
                     status: "pending",
+                    frequency: formDetails.frequency,
                 })
             });
             const data = await response.json();
@@ -92,20 +95,18 @@ export default function EventModal({ handleCalendarUpdate }) {
                 type="dashed"
                 onClick={showModal}
                 className="add-event-button"
-                style={{marginRight: "15px"}}
+                style={{ marginRight: "15px" }}
                 icon={<PlusCircleOutlined />}>
                 Add a new Event
             </Button>
             <Modal
-                title="Add a new event"
                 open={open}
                 onOk={handleOk}
                 confirmLoading={confirmLoading}
                 onCancel={handleCancel}
             >
-                <Form ref={formRef} name="complex-form">
+                <Form ref={formRef} name="complex-form" labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
                     <Form.Item
-                        label="Event Name"
                         name="eventName"
                         rules={[
                             {
@@ -114,12 +115,13 @@ export default function EventModal({ handleCalendarUpdate }) {
                             },
                         ]}
                     >
-                        <Input style={{ width: 160 }} placeholder="Please input" />
+                        <Input size="large" style={{height: "auto", fontSize: "20px", width: "450px"}} placeholder="Add your Title" bordered={false} />
                     </Form.Item>
                     <Form.Item
                         className="color-picker"
                         name="priority"
-                        label="Select Color">
+                        label="Select Color"
+                    >
                         <Space.Compact>
                             {colorOptions.map((option) => (
                                 <div
@@ -140,13 +142,13 @@ export default function EventModal({ handleCalendarUpdate }) {
                                     onClick={() => handleColorSelect(option.color, option.sort)}
                                     title={option.priority}
                                 />
-                                
+
                             ))}
                         </Space.Compact>
                     </Form.Item>
                     <Form.Item
                         name="date"
-                        label="Select Date"
+                        label="Start Date"
                         rules={[
                             {
                                 required: true,
@@ -154,9 +156,22 @@ export default function EventModal({ handleCalendarUpdate }) {
                             },
                         ]}
                     >
-                        <DatePicker showTime format="YYYY-MM-DD HH:mm A" use12Hours minuteStep={15} />
+                        <DatePicker className="form-input" showTime format="YYYY-MM-DD HH:mm A" use12Hours minuteStep={15} />
+                    </Form.Item>
+                    <Form.Item
+                        name="frequency"
+                        label="Frequency"
+                    >
+                        <Select className="form-input" style={{ width: 120 }}>
+                            <Select.Option value="none">None</Select.Option>
+                            <Select.Option value="daily">Daily</Select.Option>
+                            <Select.Option value="weekly">Weekly</Select.Option>
+                            <Select.Option value="biweekly">Biweekly</Select.Option>
+                            <Select.Option value="monthly">Monthly</Select.Option>
+                        </Select>
                     </Form.Item>
                 </Form>
+
             </Modal>
         </div>
     );

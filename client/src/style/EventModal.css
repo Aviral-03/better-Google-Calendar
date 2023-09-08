@@ -17,3 +17,26 @@
   align-items: center;
   justify-content: center;
 }
+
+.ant-form-item-control-input {
+  width: 140px;
+}
+
+/* CSS for vertical alignment of form labels and inputs */
+.form-label {
+  width: 150px; /* Adjust the width as needed */
+  text-align: right; /* Right-align the labels for vertical alignment */
+  display: inline-block;
+  padding-right: 10px; /* Add some spacing between the label and input */
+}
+
+.form-input {
+  width: 300px; /* Adjust the width as needed */
+  display: inline-block;
+  vertical-align: middle; /* Vertically align the inputs with labels */
+}
+
+.ant-modal-body {
+  margin-top: 20px;
+}
+
