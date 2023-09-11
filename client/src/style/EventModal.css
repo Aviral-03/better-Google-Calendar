@@ -18,9 +18,6 @@
   justify-content: center;
 }
 
-.ant-form-item-control-input {
-  width: 140px;
-}
 
 /* CSS for vertical alignment of form labels and inputs */
 .form-label {

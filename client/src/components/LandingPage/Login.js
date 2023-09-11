@@ -56,7 +56,8 @@ export default function Login({ handleRegistrationEvent}) {
         }
     }
     return (
-        <div className="login-form body">
+        <div className="login-form body"
+        >
             <Form
                 name="normal_login"
                 className="login-form"
@@ -92,7 +93,8 @@ export default function Login({ handleRegistrationEvent}) {
                         value={password} onChange={e => setPassword(e.target.value)}
                     />
                 </Form.Item>
-                <Form.Item>
+                <Form.Item 
+                >
                     <Button style={{ width: "100%", marginBottom: "0.5rem" }} type="primary" htmlType="submit" className="login-form-button">
                         Log In
                     </Button>
