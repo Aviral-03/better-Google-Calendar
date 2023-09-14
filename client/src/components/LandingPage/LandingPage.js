@@ -18,8 +18,8 @@ export default function App() {
           <div className="landing-page">
             <div className="login-container header">
               <h1 className="name" style={{ position: "absolute", top: "20%", left: "50%", transform: "translate(-50%, -50%)", zIndex: "1" }}>
-                {/* <TitleDisplay /> */}
-                Unclusterd
+                <TitleDisplay />
+                {/* Unclusterd */}
               </h1>
             </div>
             <div className="landing-page-body">
