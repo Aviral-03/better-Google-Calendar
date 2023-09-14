@@ -81,7 +81,7 @@ export default function Home() {
         setEndDate(endDate);
         let calendarEvents;
         try {
-            const response = await fetch('http://localhost:8080/api/getEvents', {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/getEvents`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

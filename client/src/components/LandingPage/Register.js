@@ -37,7 +37,7 @@ export default function Register({handleRegistrationEvent}) {
 
     async function showUsers() {
         try {
-            const response = await fetch("http://localhost:8080/api/users");
+            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/users`);
             const data = await response.json();
             // console.log(data);
         } catch (error) {
@@ -47,7 +47,7 @@ export default function Register({handleRegistrationEvent}) {
 
     async function handleRegistration(e) {
         try {
-            const response = await fetch("http://localhost:8080/api/register", {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

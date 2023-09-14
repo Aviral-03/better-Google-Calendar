@@ -38,7 +38,7 @@ export default function EventCards({ event, colorOptions }) {
         setTaskStatus('complete');
         const formattedDate = dayjs(event.date).format('YYYY-MM-DD');
         try {
-            const response = fetch('http://localhost:8080/api/updateEvent', {
+            const response = fetch(`${process.env.REACT_APP_SERVER_URL}/api/updateEvent`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -67,7 +67,7 @@ export default function EventCards({ event, colorOptions }) {
     async function deleteEvent() {
         const formattedDate = dayjs(event.date).format('YYYY-MM-DD');
         try {
-            const response = await fetch('http://localhost:8080/api/deleteEvent', {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/deleteEvent`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
